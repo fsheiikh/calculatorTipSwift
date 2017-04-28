@@ -10,15 +10,15 @@ import UIKit
 
 class ViewController: UIViewController {
 
-    @IBOutlet weak var lblPercent1: UILabel!
+    @IBOutlet weak var lblPercent1: UILabel!//row one
     @IBOutlet weak var lblPercent2: UILabel!
     @IBOutlet weak var lblPercent3: UILabel!
     
-    @IBOutlet weak var lblTip1: UILabel!
+    @IBOutlet weak var lblTip1: UILabel!//row two
     @IBOutlet weak var lblTip2: UILabel!
     @IBOutlet weak var lblTip3: UILabel!
     
-    @IBOutlet weak var lblTotal1: UILabel!
+    @IBOutlet weak var lblTotal1: UILabel!//row three
     @IBOutlet weak var lblTotal2: UILabel!
     @IBOutlet weak var lblTotal3: UILabel!
     
@@ -45,58 +45,81 @@ class ViewController: UIViewController {
     @IBAction func tipChanged(sender: UISlider) {
         print(Int(sender.value))
         let percent = Int(sender.value)
-        let percentBelow = Int(sender.value) - 5
-        let percentAbove = Int(sender.value) + 5
-        
-        //sets the percentage to be calculated by
-       calcul
-        
-        //sets the tips alone
-        lblTip1.text = String(Double(percentBelow) * 0.01 * numTotal)
-        lblTip2.text = String(Double(percent) * 0.01 * numTotal)
-        lblTip3.text = String(Double(percentAbove) * 0.01 * numTotal)
-        
-        //sets the tips + totals
-        lblTotal1.text = String(Double(percentBelow) * 0.01 * numTotal + numTotal)
-        lblTotal2.text = String(Double(percent) * 0.01 * numTotal + numTotal)
-        lblTotal3.text = String(Double(percentAbove) * 0.01 * numTotal + numTotal)
 
         
+        //sets the percentage to be calculated by
+        setPercentages(percent)
+        
+        //sets the tips alone
+        setTips(percent)
+        
+        //sets the tips + totals
+        setTipPlusTotal(percent)
     }
     
     @IBAction func groupSizeChanged(sender: UISlider) {
         let percent = Int(slider.value)
-        let percentBelow = Int(slider.value) - 5
-        let percentAbove = Int(slider.value) + 5
         let groupSize = Int(sender.value)
         lblGroupSize.text = "Group Size: " + String(groupSize)
         
         
         //divides tips by groupsize
-        lblTip1.text = String((Double(percentBelow) * 0.01 * numTotal)/Double(groupSize))
-        lblTip2.text = String((Double(percent) * 0.01 * numTotal)/Double(groupSize))
-        lblTip3.text = String((Double(percentAbove) * 0.01 * numTotal)/Double(groupSize))
+        divideTipByGroupSize(percent, groupSize: groupSize)
         
         //sets the tips + totals diveded by group size
-        lblTotal1.text = String((Double(percentBelow) * 0.01 * numTotal + numTotal)/Double(groupSize))
-        
+        groupTotal(percent, groupSize: groupSize)
+    }
+    
+   
+    
+    func setPercentages(percent: Int)
+    {
+        lblPercent2.text = String(percent) + "%" //middle percentatge
+        lblPercent1.text = String(percent - 5) + "%"
+        lblPercent3.text = String(percent + 5) + "%"
+    }
+    
+    func setTips(percent : Int)
+    {
+        print("Helloooooo", percent)
+        lblTip1.text = String(Double(percent - 5) * 0.01 * numTotal)
+        lblTip2.text = String(Double(percent) * 0.01 * numTotal)
+        lblTip3.text = String(Double(percent + 5) * 0.01 * numTotal)
+    }
+    
+    func setTipPlusTotal(percent : Int)
+    {
+        lblTotal1.text = String(Double(percent - 5) * 0.01 * numTotal + numTotal)
+        lblTotal2.text = String(Double(percent) * 0.01 * numTotal + numTotal)
+        lblTotal3.text = String(Double(percent + 5) * 0.01 * numTotal + numTotal)
+    }
+    
+    func divideTipByGroupSize(percent: Int, groupSize: Int)
+    {
+        lblTip1.text = String((Double(percent - 5 ) * 0.01 * numTotal)/Double(groupSize))
+        lblTip2.text = String((Double(percent) * 0.01 * numTotal)/Double(groupSize))
+        lblTip3.text = String((Double(percent + 5) * 0.01 * numTotal)/Double(groupSize))
+    }
+    
+    func groupTotal(percent: Int, groupSize: Int)
+    {
+        lblTotal1.text = String((Double(percent - 5) * 0.01 * numTotal + numTotal)/Double(groupSize))
         lblTotal2.text = String((Double(percent) * 0.01 * numTotal + numTotal)/Double(groupSize))
-        lblTotal3.text = String((Double(percentAbove) * 0.01 * numTotal + numTotal)/Double(groupSize))
+        lblTotal3.text = String((Double(percent + 5) * 0.01 * numTotal + numTotal)/Double(groupSize))
     }
     
     
+    //////////////////////////////////////////////////////////////////////////////////////////////
     override func viewDidLoad() {
         super.viewDidLoad()
         lblTotal.text = " "
         // Do any additional setup after loading the view, typically from a nib.
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-    
 
 
 }
